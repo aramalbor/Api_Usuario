@@ -27,13 +27,13 @@ namespace Api_Usuario.Controllers
             _configuration = configuration;
             _context = context;
         }
-        [Authorize]
+       // [Authorize]
         [HttpGet]
         public IEnumerable<Usuario> AllUsers() 
         {
             return _context.Usuarios.OrderBy(x => x.Id);    
         }
-        [Authorize]
+       // [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
@@ -50,9 +50,9 @@ namespace Api_Usuario.Controllers
 
             return usuarios;
         }
-        [Authorize]
-        [HttpGet("clave")]
-        public async Task<ActionResult<string>> UsuariosByClave(string clave)
+       // [Authorize]
+        [HttpPost("clave")]
+        public async Task<ActionResult<string>> UsuariosByClave([FromForm]string clave)
         {
             if (_context.Usuarios == null)
             {
@@ -67,7 +67,7 @@ namespace Api_Usuario.Controllers
 
             return usuarios.Region;
         }
-        [Authorize]
+       // [Authorize]
         [HttpPost]
         [Route("PostUsuarios")]
         public async Task<ActionResult<Usuario>> PostUsuarios(Usuario usuarios)
@@ -94,7 +94,7 @@ namespace Api_Usuario.Controllers
 
         [HttpPost]
         [Route("Auth")]
-        public async Task<ActionResult> Auth(string clave)
+        public async Task<ActionResult> Auth([FromForm]string clave)
         {
             if (_context.Usuarios == null)
             {
@@ -139,7 +139,7 @@ namespace Api_Usuario.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        [Authorize]
+       // [Authorize]
         [HttpGet("getSession")]
         public IActionResult Protected()
         {
