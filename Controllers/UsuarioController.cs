@@ -67,7 +67,7 @@ namespace Api_Usuario.Controllers
 
             return usuarios.Region;
         }
-       // [Authorize]
+        // [Authorize]
         [HttpPost]
         [Route("PostUsuarios")]
         public async Task<ActionResult<Usuario>> PostUsuarios(Usuario usuarios)
@@ -84,10 +84,25 @@ namespace Api_Usuario.Controllers
             }
 
             string clave = Convert.ToBase64String(key);
-            usuarios.Uid = clave;
 
-            _context.Usuarios.Add(usuarios);
-            await _context.SaveChangesAsync();
+            if (usuarios.Uid != "string")
+            {
+                if (_context.Usuarios.Where(u => u.Uid == usuarios.Uid) != null)
+                {
+                    _context.Usuarios.Add(usuarios);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                usuarios.Uid = clave;
+                _context.Usuarios.Add(usuarios);
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction("GetUsuario", new { id = usuarios.Id }, usuarios);
         }
