@@ -38,4 +38,6 @@ public partial class UsuarioContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    public DbSet<Api_Usuario.Models.Storage>? Storage { get; set; }
 }

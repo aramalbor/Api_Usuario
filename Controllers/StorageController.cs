@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Api_Usuario.Data;
+using Api_Usuario.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -8,15 +10,16 @@ namespace Api_Usuario.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Storage : ControllerBase
+    public class StorageController : ControllerBase
     {
-
+        private readonly UsuarioContext _context;
 
 
         private HttpClient _httpClient;
 
-        public Storage()
+        public StorageController(UsuarioContext context)
         {
+            _context = context;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://talkday1.igrtec.cloud/index.php/wp-json/wp/v2/posts");
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -25,7 +28,7 @@ namespace Api_Usuario.Controllers
 
         [HttpPost]
         [Route("UploadStorage")]
-        public async Task<ActionResult<string>> UploadAndReturnImageUrl(IFormFile file)
+        public async Task<ActionResult<string>> UploadAndReturnImageUrl(IFormFile file , string titulo , string subtitulo , int repeticiones, string uidUser )
         {
             if (file == null || file.Length == 0)
             {
@@ -62,7 +65,19 @@ namespace Api_Usuario.Controllers
                         dynamic data = JsonConvert.DeserializeObject(json);
                         string imageUrl = data?.source_url;
 
-                        return Ok(imageUrl);
+                        var dataStorage = new Storage()
+                        {   
+                            Titulo = titulo,
+                            Subtitulo = subtitulo,
+                            Repeticiones = repeticiones,
+                            Fecha= DateTime.Now,
+                            UrlArchivo=imageUrl,
+                            UidUser= uidUser
+
+                        };
+                        _context.Storage.Add(dataStorage);
+                        _context.SaveChanges();
+                        return Ok(dataStorage);
                     }
                     else
                     {
