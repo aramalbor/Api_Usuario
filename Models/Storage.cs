@@ -11,6 +11,8 @@ namespace Api_Usuario.Models
         [Required]
         public string Subtitulo { get; set; }
         [Required]
+        public string SubtituloOrginal { get; set; }
+        [Required]
         public int Repeticiones { get; set; }
         [Required]
         public DateTime Fecha { get; set; }

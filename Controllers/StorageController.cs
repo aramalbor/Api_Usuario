@@ -28,7 +28,7 @@ namespace Api_Usuario.Controllers
 
         [HttpPost]
         [Route("UploadStorage")]
-        public async Task<ActionResult<string>> UploadAndReturnImageUrl(IFormFile file , string titulo , string subtitulo , int repeticiones, string uidUser )
+        public async Task<ActionResult<string>> UploadAndReturnImageUrl( [FromForm]string titulo , [FromForm] string subtitulo , [FromForm] string subtituloOriginal, [FromForm] int repeticiones, [FromForm] string uidUser, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -69,6 +69,7 @@ namespace Api_Usuario.Controllers
                         {   
                             Titulo = titulo,
                             Subtitulo = subtitulo,
+                            SubtituloOrginal = subtituloOriginal,
                             Repeticiones = repeticiones,
                             Fecha= DateTime.Now,
                             UrlArchivo=imageUrl,
@@ -159,6 +160,20 @@ namespace Api_Usuario.Controllers
         }
 
 
+        // GET: api/Storages/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Storage>> GetStorage(string id)
+        {
+            
+            var storage =  _context.Storage.Where(c=>c.UidUser == id);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(storage);
+        }
 
 
 
