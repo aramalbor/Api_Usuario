@@ -46,7 +46,7 @@ namespace Api_Usuario.Controllers
                 using (var content = new MultipartFormDataContent())
                 {
                     var imageContent = new ByteArrayContent(fileBytes);
-                    imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
+                   // imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
                     content.Add(imageContent, "file", file.FileName);
 
                     // Enviar la solicitud a la API de WordPress
