@@ -174,7 +174,7 @@ namespace Api_Usuario.Controllers
 
 
         [HttpPost("GetUserID")]
-        public async Task<ActionResult<string>> GetUserID(string clave)
+        public async Task<ActionResult<string>> GetUserID([FromForm]string clave)
         { 
             var user = _context.Usuarios.FirstOrDefault(u => u.ClaveUsuario == clave);
 
