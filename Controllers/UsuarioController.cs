@@ -171,5 +171,14 @@ namespace Api_Usuario.Controllers
         {
             return _context.Usuarios.Where(c => c.Uid == username);
         }
+
+
+        [HttpPost("GetUserID")]
+        public async Task<ActionResult<string>> GetUserID(string clave)
+        { 
+            var user = _context.Usuarios.FirstOrDefault(u => u.ClaveUsuario == clave);
+
+            return user.Uid;
+        }
     }
 }
