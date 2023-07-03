@@ -8,10 +8,10 @@ namespace Api_Usuario.Models
         public int IdStorage { get; set; }
         [Required]
         public string Titulo { get; set; }
-        [Required]
-        public string Subtitulo { get; set; }
-        [Required]
-        public string SubtituloOrginal { get; set; }
+     
+        public string? Subtitulo { get; set; }
+     
+        public string? SubtituloOrginal { get; set; }
         [Required]
         public int Repeticiones { get; set; }
         [Required]

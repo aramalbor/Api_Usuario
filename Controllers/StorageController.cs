@@ -28,7 +28,7 @@ namespace Api_Usuario.Controllers
 
         [HttpPost]
         [Route("UploadStorage")]
-        public async Task<ActionResult<string>> UploadAndReturnImageUrl( [FromForm]string titulo , [FromForm] string subtitulo , [FromForm] string subtituloOriginal, [FromForm] int repeticiones, [FromForm] string uidUser, IFormFile file)
+        public async Task<ActionResult<string>> UploadAndReturnImageUrl( [FromForm]string titulo , [FromForm] string ? subtitulo , [FromForm] string ? subtituloOriginal, [FromForm] int repeticiones, [FromForm] string uidUser, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
