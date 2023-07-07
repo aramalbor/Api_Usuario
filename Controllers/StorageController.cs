@@ -28,7 +28,7 @@ namespace Api_Usuario.Controllers
 
         [HttpPost]
         [Route("UploadStorage")]
-        public async Task<ActionResult<string>> UploadAndReturnImageUrl( [FromForm]string titulo , [FromForm] string ? subtitulo , [FromForm] string ? subtituloOriginal, [FromForm] int repeticiones, [FromForm] string uidUser, IFormFile file)
+        public async Task<ActionResult<string>> UploadAndReturnImageUrl( [FromForm]string titulo , [FromForm] string ? subtitulo , [FromForm] string ? subtituloOriginal, [FromForm] int repeticiones, [FromForm] string fecha, [FromForm] string uidUser, IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
@@ -65,13 +65,49 @@ namespace Api_Usuario.Controllers
                         dynamic data = JsonConvert.DeserializeObject(json);
                         string imageUrl = data?.source_url;
 
+                        DateTime tiempo = DateTime.Now;
+
+                        if (fecha.Length == 2)
+                        {
+                            int cantidad = Int32.Parse(fecha.Substring(0, 1));
+                            if (fecha.Substring(1).ToUpper() == "D")
+                            {
+                                tiempo = tiempo.AddDays(cantidad);
+                            }
+                            else
+                            {
+                                if (fecha.Substring(1).ToUpper() == "H")
+                                {
+                                    tiempo = tiempo.AddHours(cantidad);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (fecha.Length == 3)
+                            {
+                                int cantidad = Int32.Parse(fecha.Substring(0, 2));
+                                if (fecha.Substring(2).ToUpper() == "D")
+                                {
+                                    tiempo = tiempo.AddDays(cantidad);
+                                }
+                                else
+                                {
+                                    if (fecha.Substring(2).ToUpper() == "H")
+                                    {
+                                        tiempo = tiempo.AddHours(cantidad);
+                                    }
+                                }
+                            }
+                        }
+
                         var dataStorage = new Storage()
                         {   
                             Titulo = titulo,
                             Subtitulo = subtitulo,
                             SubtituloOrginal = subtituloOriginal,
                             Repeticiones = repeticiones,
-                            Fecha= DateTime.Now,
+                            Fecha= tiempo,
                             UrlArchivo=imageUrl,
                             UidUser= uidUser
 
