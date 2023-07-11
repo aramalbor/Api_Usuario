@@ -116,6 +116,105 @@ namespace Api_Usuario.Controllers
             return NoContent();
         }
 
+        [HttpPost("{id}")]
+        public async Task<IActionResult> GetByFecha(string id) 
+        {
+            if (_context.Storage == null)
+            {
+                return NotFound();
+            }
+            DateTime fechaactual = DateTime.Now;
+
+            var storage = from s in _context.Storage
+                          join u in _context.Usuarios on s.UidUser equals u.Uid
+                          where u.Uid == id && s.Fecha >= fechaactual
+                          select new
+                          {
+                              Titulo = s.Titulo,
+                              SubtituloOriginal = s.SubtituloOrginal,
+                              Subtitulo = s.Subtitulo,
+                          };
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(storage);
+        }
+
+        [HttpPut]
+        [Route("UpdateStorage")]
+        public async Task<IActionResult> UpStorage(UpdateStorage info) 
+        {
+            var storage = await _context.Storage.FindAsync(info.Id);
+            if (storage == null)
+            {
+                return BadRequest();
+            }
+            DateTime tiempo = DateTime.Now;
+
+            if (info.Intervalo.Length == 2)
+            {
+                int cantidad = Int32.Parse(info.Intervalo.Substring(0, 1));
+                if (info.Intervalo.Substring(1).ToUpper() == "D")
+                {
+                    tiempo = tiempo.AddDays(cantidad);
+                }
+                else
+                {
+                    if (info.Intervalo.Substring(1).ToUpper() == "H")
+                    {
+                        tiempo = tiempo.AddHours(cantidad);
+                    }
+                }
+            }
+            else
+            {
+                if (info.Intervalo.Length == 3)
+                {
+                    int cantidad = Int32.Parse(info.Intervalo.Substring(0, 2));
+                    if (info.Intervalo.Substring(2).ToUpper() == "D")
+                    {
+                        tiempo = tiempo.AddDays(cantidad);
+                    }
+                    else
+                    {
+                        if (info.Intervalo.Substring(2).ToUpper() == "H")
+                        {
+                            tiempo = tiempo.AddHours(cantidad);
+                        }
+                    }
+                }
+            }
+
+            storage.Repeticiones = info.Repeticiones;
+            storage.Fecha = tiempo;
+
+            _context.Entry(storage).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!StorageExists(info.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+           
+        }
+
         private bool StorageExists(int id)
         {
             return (_context.Storage?.Any(e => e.IdStorage == id)).GetValueOrDefault();
