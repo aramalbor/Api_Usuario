@@ -116,8 +116,9 @@ namespace Api_Usuario.Controllers
             return NoContent();
         }
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> GetByFecha(string id) 
+        [HttpPost]
+        [Route("GetByFecha")]
+        public async Task<IActionResult> GetByFecha([FromBody]string id) 
         {
             if (_context.Storage == null)
             {
