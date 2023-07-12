@@ -128,7 +128,7 @@ namespace Api_Usuario.Controllers
 
             var storage = from s in _context.Storage
                           join u in _context.Usuarios on s.UidUser equals u.Uid
-                          where u.Uid == id && s.Fecha >= fechaactual
+                          where u.Uid == id && fechaactual >= s.Fecha 
                           select new
                           {
                               IdStorage = s.IdStorage,
