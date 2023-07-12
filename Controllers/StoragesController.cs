@@ -131,6 +131,7 @@ namespace Api_Usuario.Controllers
                           where u.Uid == id && s.Fecha >= fechaactual
                           select new
                           {
+                              IdStorage = s.IdStorage,
                               Grabacion = s.UrlArchivo,
                               Titulo = s.Titulo,
                               SubtituloOriginal = s.SubtituloOrginal,
