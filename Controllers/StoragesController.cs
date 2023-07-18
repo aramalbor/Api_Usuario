@@ -136,6 +136,7 @@ namespace Api_Usuario.Controllers
                               Titulo = s.Titulo,
                               SubtituloOriginal = s.SubtituloOrginal,
                               Subtitulo = s.Subtitulo,
+                              Repeticiones = s.Repeticiones,
                           };
 
             if (storage == null)
