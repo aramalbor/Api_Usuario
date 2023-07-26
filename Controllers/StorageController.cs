@@ -99,6 +99,24 @@ namespace Api_Usuario.Controllers
                                     }
                                 }
                             }
+                            else
+                            {
+                                if (fecha.Length == 4)
+                                {
+                                    int cantidad = Int32.Parse(fecha.Substring(0, 3));
+                                    if (fecha.Substring(3).ToUpper() == "D")
+                                    {
+                                        tiempo = tiempo.AddDays(cantidad);
+                                    }
+                                    else
+                                    {
+                                        if (fecha.Substring(3).ToUpper() == "H")
+                                        {
+                                            tiempo = tiempo.AddHours(cantidad);
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         var dataStorage = new Storage()

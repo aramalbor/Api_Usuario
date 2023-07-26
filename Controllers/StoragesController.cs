@@ -191,6 +191,24 @@ namespace Api_Usuario.Controllers
                         }
                     }
                 }
+                else
+                {
+                    if (info.Intervalo.Length == 4)
+                    {
+                        int cantidad = Int32.Parse(info.Intervalo.Substring(0, 3));
+                        if (info.Intervalo.Substring(3).ToUpper() == "D")
+                        {
+                            tiempo = tiempo.AddDays(cantidad);
+                        }
+                        else
+                        {
+                            if (info.Intervalo.Substring(3).ToUpper() == "H")
+                            {
+                                tiempo = tiempo.AddHours(cantidad);
+                            }
+                        }
+                    }
+                }
             }
 
             storage.Repeticiones = info.Repeticiones;
